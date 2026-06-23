@@ -104,7 +104,7 @@ GET    /api/health                   # État de l'API
 ```
 
 ## Installation & Configuration
-Ce sont les près requis pour faire fonctionner l'application. !!!! Je créerais bien une image Docker afin de télécharger tout d'un coup. 
+Ce sont les près requis pour faire fonctionner l'application. !!!! Je créerais bientôt une image Docker afin de télécharger tout d'un coup. 
 
 ### Prérequis
 - Java 17+ <-- ICI Java 21 fonctionne aussi et est plus compatible avec lombok
