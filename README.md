@@ -1,4 +1,4 @@
-<img width="512" height="512" alt="image" src="https://github.com/user-attachments/assets/f518c9c8-96e7-4cac-9f01-41cb0e7b5c7b" />Il s'agit de mon application de gestion d'emplois du temps construite avec Quarkus, un framework Java moderne et réactif, il s'agit pour ceux qui ne savent pas d'une sorte de dérive de Spring boot .
+Il s'agit de mon application de gestion d'emplois du temps construite avec Quarkus, un framework Java moderne et réactif, il s'agit pour ceux qui ne savent pas d'une sorte de dérive de Spring boot .
 
 ## Les Fonctionnalités
 
