@@ -1,27 +1,25 @@
-# Scheduler API - Backend Quarkus
+<img width="512" height="512" alt="image" src="https://github.com/user-attachments/assets/f518c9c8-96e7-4cac-9f01-41cb0e7b5c7b" />Il s'agit de mon application de gestion d'emplois du temps construite avec Quarkus, un framework Java moderne et réactif, il s'agit pour ceux qui ne savent pas d'une sorte de dérive de Spring boot .
 
-Une application complète de gestion d'emplois du temps construite avec **Quarkus**, un framework Java moderne et réactif.
-
-## 📋 Fonctionnalités
+## Les Fonctionnalités
 
 ### Gestion des Utilisateurs
-- ✅ Créer, lire, mettre à jour, supprimer des utilisateurs
-- ✅ Authentification par username/email
-- ✅ Activation/Désactivation de compte
+- Créer, lire, mettre à jour, supprimer des utilisateurs
+- Authentification par username/email
+- Activation/Désactivation de compte
 
 ### Gestion des Emplois du Temps
-- ✅ Créer et organiser plusieurs emplois du temps
-- ✅ Code couleur pour chaque emploi du temps
-- ✅ Activation/Désactivation d'emplois du temps
+- Créer et organiser plusieurs emplois du temps
+- Code couleur pour chaque emploi du temps
+- Activation/Désactivation d'emplois du temps
 
 ### Gestion des Événements/Tâches
-- ✅ Ajouter des événements avec horaires précis
-- ✅ Gérer les priorités (Low, Medium, High)
-- ✅ Marquer les tâches comme complétées
-- ✅ Filtrer par date, priorité, statut
-- ✅ Ajouter des détails (localisation, notes, catégories)
+- Ajouter des événements avec horaires précis
+- Gérer les priorités (Low, Medium, High)
+- Marquer les tâches comme complétées
+- Filtrer par date, priorité, statut
+- Ajouter des détails (localisation, notes, catégories)
 
-## 🚀 Architecture
+## L'Architecture
 
 ```
 com.timescheduler/
@@ -51,18 +49,20 @@ com.timescheduler/
 └── SchedulerApplication.java
 ```
 
-## 🛠️ Technologies
+## Les technologies
+Voici les différentes languages et technologies utilisé pour faire fonctionner cette app. Pour plus d'information n'hésité pas à regarder le POM.
 
-- **Quarkus 3.8.1** - Framework Java ultra-rapide
-- **JPA/Hibernate** - Persistance de données
-- **PostgreSQL** - Base de données
-- **JAX-RS** - API REST
-- **Lombok** - Réduction de boilerplate
-- **MapStruct** - Mapping d'objets
+- Quarkus 3.8.1
+- JPA/Hibernate
+- PostgreSQL
+- JAX-RS
+- Lombok
+- MapStruct
 
-## 📚 API Endpoints
+## Les API Endpoints
 
 ### Utilisateurs
+Infos API pour les tests
 ```
 POST   /api/users                    # Créer un utilisateur
 GET    /api/users                    # Lister tous les utilisateurs
@@ -103,10 +103,11 @@ POST   /api/schedules/{scheduleId}/items/{id}/incomplete # Marquer incomplet
 GET    /api/health                   # État de l'API
 ```
 
-## 🔧 Installation & Configuration
+## Installation & Configuration
+Ce sont les près requis pour faire fonctionner l'application. !!!! Je créerais bien une image Docker afin de télécharger tout d'un coup. 
 
 ### Prérequis
-- Java 17+
+- Java 17+ <-- ICI Java 21 fonctionne aussi et est plus compatible avec lombok
 - Maven 3.8+
 - PostgreSQL 12+
 
@@ -137,7 +138,7 @@ java -jar target/quarkus-scheduler-1.0.0-runner.jar
 
 L'API sera accessible sur `http://localhost:8080/api`
 
-## 📝 Exemples de Requêtes
+## Exemples de Requêtes
 
 ### Créer un utilisateur
 ```bash
@@ -179,17 +180,17 @@ curl -X POST http://localhost:8080/api/schedules/1/items \
   }'
 ```
 
-## 🔒 Sécurité
+## Sécurité
 
 Pour la production, implémentez:
-- ✅ JWT ou OAuth2 pour l'authentification
-- ✅ Hachage des mots de passe (BCrypt)
-- ✅ Validation des entrées
-- ✅ HTTPS
-- ✅ Rate limiting
-- ✅ Chiffrement des données sensibles
+- JWT ou OAuth2 pour l'authentification
+- Hachage des mots de passe (BCrypt)
+- Validation des entrées
+- HTTPS
+- Rate limiting
+- Chiffrement des données sensibles
 
-## 📦 Structure des Données
+## Structure des Données
 
 ### User
 ```json
@@ -237,7 +238,7 @@ Pour la production, implémentez:
 }
 ```
 
-## 🧪 Tests
+## Tests
 
 ```bash
 # Lancer les tests
@@ -247,12 +248,12 @@ mvn test
 mvn test jacoco:report
 ```
 
-## 📄 Licence
+## Licence
 
 MIT License
 
-## 👨‍💻 Support
-
-Pour toute question ou problème, veuillez consulter la documentation Quarkus officielle:
+## Support
+Si vous avez des questions sur ce code, n'hésite pas à passer par mon portfolio pour que je puisse répondre à votre question.
+Pour toute question ou problème concernant Quarkus, veuillez consulter la documentation Quarkus officielle:
 https://quarkus.io/
 # AppFinalBack
