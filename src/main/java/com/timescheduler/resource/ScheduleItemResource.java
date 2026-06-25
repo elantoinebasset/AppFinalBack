@@ -113,6 +113,7 @@ public class ScheduleItemResource {
     }
 
     public static class ErrorResponse {
+
         public String message;
 
         public ErrorResponse(String message) {
