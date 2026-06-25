@@ -106,9 +106,15 @@ public class ScheduleItemService {
     }
 
     @Transactional
-    public void deleteItem(Long id) {
+    public void deleteItem(Long scheduleId, Long id) {
         ScheduleItem item = itemRepository.findByIdOptional(id)
                 .orElseThrow(() -> new IllegalArgumentException("Schedule item not found: " + id));
+
+        if (!item.getSchedule().getId().equals(scheduleId)) {
+            throw new IllegalArgumentException(
+                    "Schedule item " + id + " does not belong to schedule " + scheduleId);
+        }
+
         itemRepository.delete(item);
     }
 

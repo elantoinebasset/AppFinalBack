@@ -80,7 +80,7 @@ public class ScheduleItemResource {
     @Path("/{id}")
     public Response deleteItem(@PathParam("scheduleId") Long scheduleId, @PathParam("id") Long id) {
         try {
-            itemService.deleteItem(id);
+            itemService.deleteItem(scheduleId, id);
             return Response.noContent().build();
         } catch (IllegalArgumentException e) {
             return Response.status(Response.Status.NOT_FOUND)
