@@ -40,6 +40,18 @@ public class AuthResource {
         }
     }
 
+    @POST
+    @Path("/google")
+    public Response google(GoogleAuthRequest request) {
+        try {
+            AuthResponse response = authService.googleLogin(request);
+            return Response.ok(response).build();
+        } catch (IllegalArgumentException e) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(new ErrorResponse(e.getMessage())).build();
+        }
+    }
+
     @GET
     @Path("/me")
     public Response me(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization) {
@@ -64,6 +76,7 @@ public class AuthResource {
     }
 
     public static class ErrorResponse {
+
         public String message;
 
         public ErrorResponse(String message) {

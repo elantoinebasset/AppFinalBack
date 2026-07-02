@@ -1,0 +1,15 @@
+FROM maven:3.9.8-eclipse-temurin-21
+
+WORKDIR /workspace
+
+# Pre-copy wrapper and pom to warm up dependencies layer.
+COPY .mvn .mvn
+COPY mvnw pom.xml ./
+RUN chmod +x mvnw
+
+# Copy sources (dev image for quarkus:dev)
+COPY src src
+
+EXPOSE 8080 5005
+
+CMD ["./mvnw", "quarkus:dev", "-Dquarkus.http.host=0.0.0.0"]

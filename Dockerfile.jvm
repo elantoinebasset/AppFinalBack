@@ -1,0 +1,16 @@
+# Runtime-only image: utilise le fast-jar deja construit en local
+# (./mvnw -o clean package -DskipTests) car le build Maven dans Docker
+# n'a pas d'acces reseau dans cet environnement.
+FROM eclipse-temurin:21-jre-alpine
+
+WORKDIR /app
+
+# Copier la structure complete du fast-jar Quarkus (l'ordre est important)
+COPY target/quarkus-app/lib/ ./lib/
+COPY target/quarkus-app/*.jar ./
+COPY target/quarkus-app/app/ ./app/
+COPY target/quarkus-app/quarkus/ ./quarkus/
+
+EXPOSE 8080
+
+CMD ["java", "-Dquarkus.http.host=0.0.0.0", "-jar", "quarkus-run.jar"]
