@@ -43,6 +43,10 @@ public class User {
     @Column(name = "is_active")
     private Boolean isActive = true;
 
+    @Column(name = "email_verified")
+    @Builder.Default
+    private Boolean emailVerified = false;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     private List<Schedule> schedules = new ArrayList<>();

@@ -7,6 +7,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.net.URI;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @Path("/auth")
 @Produces(MediaType.APPLICATION_JSON)
@@ -15,6 +17,9 @@ public class AuthResource {
 
     @Inject
     AuthService authService;
+
+    @ConfigProperty(name = "app.frontend.url")
+    String frontendUrl;
 
     @POST
     @Path("/register")
@@ -49,6 +54,18 @@ public class AuthResource {
         } catch (IllegalArgumentException e) {
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity(new ErrorResponse(e.getMessage())).build();
+        }
+    }
+
+    @GET
+    @Path("/verify")
+    @Produces(MediaType.TEXT_HTML)
+    public Response verify(@QueryParam("token") String token) {
+        try {
+            authService.verifyEmail(token);
+            return Response.seeOther(URI.create(frontendUrl + "/?verified=1")).build();
+        } catch (Exception e) {
+            return Response.seeOther(URI.create(frontendUrl + "/?verified=0")).build();
         }
     }
 

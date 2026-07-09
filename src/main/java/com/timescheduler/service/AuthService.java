@@ -6,6 +6,7 @@ import com.timescheduler.repository.UserRepository;
 import com.timescheduler.security.GoogleTokenVerifier;
 import com.timescheduler.security.JwtService;
 import com.timescheduler.security.PasswordService;
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -27,6 +28,9 @@ public class AuthService {
     @Inject
     GoogleTokenVerifier googleTokenVerifier;
 
+    @Inject
+    EmailService emailService;
+
     @Transactional
     public AuthResponse register(AuthRegisterRequest request) {
         validateRegisterRequest(request);
@@ -45,15 +49,27 @@ public class AuthService {
                 .lastName(request.getLastName())
                 .password(passwordService.hashPassword(request.getPassword()))
                 .isActive(true)
+                .emailVerified(false)
                 .build();
 
         userRepository.persist(user);
 
-        String token = jwtService.generateToken(user.getUsername());
+        sendVerificationEmail(user);
+
+        // Pas de token retourne : l'utilisateur doit d'abord verifier son email avant de se connecter
         return AuthResponse.builder()
-                .token(token)
                 .user(mapToDTO(user))
                 .build();
+    }
+
+    private void sendVerificationEmail(User user) {
+        try {
+            String token = jwtService.generateEmailVerificationToken(user.getEmail());
+            emailService.sendVerificationEmail(user.getEmail(), user.getFirstName(), token);
+        } catch (Exception e) {
+            // On ne bloque pas l'inscription si l'envoi echoue
+            Log.warnf("Echec de l'envoi de l'email de verification a %s : %s", user.getEmail(), e.getMessage());
+        }
     }
 
     public AuthResponse login(AuthLoginRequest request) {
@@ -70,6 +86,11 @@ public class AuthService {
 
         if (!passwordService.verifyPassword(request.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Invalid credentials");
+        }
+
+        if (Boolean.FALSE.equals(user.getEmailVerified())) {
+            throw new IllegalArgumentException(
+                    "Adresse email non vérifiée. Vérifiez votre boîte mail pour activer votre compte.");
         }
 
         String token = jwtService.generateToken(user.getUsername());
@@ -112,6 +133,7 @@ public class AuthService {
                 .lastName(lastName)
                 .password(passwordService.hashPassword(UUID.randomUUID().toString()))
                 .isActive(true)
+                .emailVerified(true)
                 .build();
 
         userRepository.persist(user);
@@ -145,6 +167,19 @@ public class AuthService {
         return mapToDTO(user);
     }
 
+    @Transactional
+    public void verifyEmail(String token) {
+        if (isBlank(token)) {
+            throw new IllegalArgumentException("Missing verification token");
+        }
+
+        String email = jwtService.validateEmailVerificationToken(token);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        user.setEmailVerified(true);
+    }
+
     private void validateRegisterRequest(AuthRegisterRequest request) {
         if (request == null
                 || isBlank(request.getUsername())
@@ -172,6 +207,7 @@ public class AuthService {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .isActive(user.getIsActive())
+                .emailVerified(user.getEmailVerified())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .build();

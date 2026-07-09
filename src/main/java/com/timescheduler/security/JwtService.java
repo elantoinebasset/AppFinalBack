@@ -42,4 +42,27 @@ public class JwtService {
         DecodedJWT jwt = verifier.verify(token);
         return jwt.getSubject();
     }
+
+    public String generateEmailVerificationToken(String email) {
+        Instant now = Instant.now();
+        Instant expiresAt = now.plusSeconds(24 * 60 * 60);
+
+        return JWT.create()
+                .withIssuer(issuer)
+                .withSubject(email)
+                .withClaim("purpose", "email-verify")
+                .withIssuedAt(Date.from(now))
+                .withExpiresAt(Date.from(expiresAt))
+                .sign(Algorithm.HMAC256(secret));
+    }
+
+    public String validateEmailVerificationToken(String token) {
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
+                .withIssuer(issuer)
+                .withClaim("purpose", "email-verify")
+                .build();
+
+        DecodedJWT jwt = verifier.verify(token);
+        return jwt.getSubject();
+    }
 }
